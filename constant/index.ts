@@ -1,0 +1,1 @@
+export const BaseUrl= "http://ux-server-dev-lb-58070451.us-east-1.elb.amazonaws.com";
