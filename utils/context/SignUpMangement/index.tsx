@@ -19,13 +19,14 @@ import { verify } from "crypto";
 import UserContactInfo from "@/components/SignUp/UserContactInfo";
 import UxThankYou from "@/components/SignUp/UxThankYou";
 import PartnerThankYou from "@/components/SignUp/ParterThankYou";
+import LandingPage from "@/components/LandingPage";
 
 
 interface AuthState {
-    verifyEmail: () => Promise<any>
+    verifyEmail: (email:string) => Promise<any>
     userName: string,
     name: string,
-    handleUserNameSubmit: () => void;
+    handleUserNameSubmit: (name:string) => void;
     emailValidationMessage: string,
     nameValidationMessage: string,
     uxHandleValidationMessage: string,
@@ -36,7 +37,7 @@ interface AuthState {
     uxHandle: string,
     password: string,
     confirmPassword: string,
-    submitUxHandleInfo: () => Promise<any>
+    submitUxHandleInfo: (uxHandle:string) => Promise<any>
     registerUser: () => Promise<any>,
     passwordValidationMessage: string,
     locationId : string,
@@ -47,21 +48,21 @@ interface AuthActions {
 }
 
 const initialState: AuthState = {
-    verifyEmail: () => Promise.resolve(null),
+    verifyEmail: (email:string) => Promise.resolve(null),
     userName: '',
     name: '',
-    handleUserNameSubmit: () => { },
+    handleUserNameSubmit: (name:string) => { },
     emailValidationMessage: '',
     nameValidationMessage: '',
     uxHandleValidationMessage: '',
     categoriesId: [],
     isUserTypeExist: false,
     userType: '',
-    activePage: 1,
+    activePage: 5,
     uxHandle: '',
     password: '',
     confirmPassword: '',
-    submitUxHandleInfo: () => Promise.resolve(null),
+    submitUxHandleInfo: (uxHandle:string) => Promise.resolve(null),
     registerUser: () => Promise.resolve(null),
     passwordValidationMessage: '',
     locationId: '',
@@ -97,17 +98,15 @@ const SignUpManagementProvider = ({ children }: any) => {
         message: ''
     });
 
-    const verifyEmail = useCallback(async () => {
-        if (!state?.userName) {
-            setState({
-                emailValidationMessage: validateEmail(state?.userName)
-            })
-        }
-        else {
+    const verifyEmail = useCallback(async (email:string) => {  
             try {
+                setState(prevState => ({
+                    ...prevState,
+                    userName: email
+                  }));
                 const response = await fetch(`${BaseUrl}/auth/verify_email_exists`, {
                     method: "POST",
-                    body: JSON.stringify({ email: state?.userName }),
+                    body: JSON.stringify({ email: email }),
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -135,36 +134,27 @@ const SignUpManagementProvider = ({ children }: any) => {
                     message: 'error occoured'
                 })
             }
-        }
-    }, [state?.userName]);
+    }, []);
 
-    const handleUserNameSubmit = useCallback(() => {
-        if (!state?.name) {
+    const handleUserNameSubmit = useCallback((name:string) => {
+        
             setState(prevState => ({
                 ...prevState,
-                nameValidationMessage: state?.name.trim() === '' ? 'Name is required' : ''
-            }));
-        }
-        else {
-            setState(prevState => ({
-                ...prevState,
+                name:name,
                 activePage: 3,
             }));
-        }
-    }, [state?.name])
+        
+    }, [])
 
-    const submitUxHandleInfo = useCallback(async () => {
-        if (!state?.uxHandle) {
-            setState(prevState => ({
-                ...prevState,
-                uxHandleValidationMessage: state?.uxHandle.trim() === '' ? 'Ux handle  is required' : '',
-            }));
-        }
-        else {
+    const submitUxHandleInfo = useCallback(async (uxHandle:string) => {
             try {
+                setState(prevState => ({
+                    ...prevState,
+                    uxHandle: uxHandle,
+                }));
                 const response = await fetch(`${BaseUrl}/auth/verify_ux_handle_exists`, {
                     method: "POST",
-                    body: JSON.stringify({ uxHandle: state?.uxHandle }),
+                    body: JSON.stringify({ uxHandle: uxHandle }),
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -172,16 +162,15 @@ const SignUpManagementProvider = ({ children }: any) => {
                 if (response.ok) {
                     const res = await response.json();
                     if (res?.data?.doesUxHandleExists) {
-                        setSnackbar({
-                            open: true,
-                            message: 'Email alredy exist'
-                        })
+                        return false;
                     }
                     else {
+
                         setState(prevState => ({
                             ...prevState,
                             activePage: 6,
                         }));
+                        return true;
                         // setActivePage(2);
                     }
                 }
@@ -192,8 +181,7 @@ const SignUpManagementProvider = ({ children }: any) => {
                     message: 'error occoured'
                 })
             }
-        }
-    }, [state?.uxHandle]);
+    }, []);
 
     const validatePassword = useCallback(() => {
         const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{6}$/;
@@ -203,7 +191,6 @@ const SignUpManagementProvider = ({ children }: any) => {
 
     const registerUser = useCallback(async () => {
         const isPasswordValid = validatePassword();
-        debugger;
         if (isPasswordValid) {
             if (state?.password != state?.confirmPassword) {
                 setState(prevState => ({
@@ -330,12 +317,12 @@ const SignUpManagementProvider = ({ children }: any) => {
         ]
     );
 
-    console.log(state,"testttt")
+    // console.log(state,"testttt")
     return (
         <>
             <SignUpManagementContext.Provider value={value}>
                 {children}
-                {state?.activePage === 1 && <SignUp />}
+                {state?.activePage === 1 && <LandingPage />}
                 {state?.activePage === 2 && <UserInfo />}
                 {state?.activePage === 3 && <UserContactInfo />}
                 {state?.activePage === 4 && <UserCategories />}

@@ -42,6 +42,16 @@ const UserContactInfo = () => {
           setErrorMessage('');
     },[])
 
+
+    // function handleFOrmValueChange(key, value){
+    //     setState(prev => ({
+    //         ...prev,
+    //         [key]: value
+    //     }))
+    // }
+
+    // handleFOrmValueChange('firstName', e.target.value)
+
     useEffect(()=>{
      getUserLocation();
     },[]);

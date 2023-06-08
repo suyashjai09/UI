@@ -6,6 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 // import SignUp from './SignUp';
 import { SignUpManagementProvider } from '@/utils/context/SignUpMangement';
+import SignUp from '../SignUp';
 const LandingPage =()=>{
     const [value, setValue] = React.useState('1');
 
@@ -22,7 +23,7 @@ const LandingPage =()=>{
                 <Tab label="Login" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1"><SignUpManagementProvider/></TabPanel>
+            <TabPanel value="1"><SignUp/></TabPanel>
             <TabPanel value="2">Item Two</TabPanel>
           </TabContext>
         </Box>
