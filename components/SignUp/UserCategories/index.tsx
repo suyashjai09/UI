@@ -77,6 +77,7 @@ const UserCategories = () => {
                 categoriesId : selectedIndustries,
                 isUserTypeExist: selectedIndustries.length === 0 ? true : false,
                 userType: radioButtonValue,
+                activePage: 5,
               }));
            }
 

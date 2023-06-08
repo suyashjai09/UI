@@ -1,5 +1,5 @@
-import SignUp from "@/components/LandingPage/SignUp";
-import UserInfo from "@/components/LandingPage/SignUp/UserInfo";
+import SignUp from "@/components/SignUp";
+import UserInfo from "@/components/SignUp/UserInfo";
 import { BaseUrl } from "@/constant";
 import React, {
     createContext,
@@ -12,81 +12,86 @@ import React, {
 } from "react";
 import { Snackbar } from "@mui/material";
 import validateEmail from "@/utils/validateEmail";
-import UserCategories from "@/components/LandingPage/SignUp/UserCategories";
+import UserCategories from "@/components/SignUp/UserCategories";
+import ClaimUxHandle from "@/components/SignUp/ClaimUxHandle";
+import UserPassword from "@/components/SignUp/UserPassword";
+import { verify } from "crypto";
+import UserContactInfo from "@/components/SignUp/UserContactInfo";
+import UxThankYou from "@/components/SignUp/UxThankYou";
+import PartnerThankYou from "@/components/SignUp/ParterThankYou";
 
 
 interface AuthState {
     verifyEmail: () => Promise<any>
-    userName: String,
-    name: String,
-    // handleEmailChange: (name: string) => Promise<any>,
-    // handleUserInfoChange: (name: string,value:string) => Promise<any>,
+    userName: string,
+    name: string,
     handleUserNameSubmit: () => void;
-    emailValidationMessage: String,
-    nameValidationMessage: String,
-    categoriesId : Array<String>,
+    emailValidationMessage: string,
+    nameValidationMessage: string,
+    uxHandleValidationMessage: string,
+    categoriesId: Array<string>,
     isUserTypeExist: Boolean,
-    userType: String,
+    userType: string,
+    activePage: number,
+    uxHandle: string,
+    password: string,
+    confirmPassword: string,
+    submitUxHandleInfo: () => Promise<any>
+    registerUser: () => Promise<any>,
+    passwordValidationMessage: string,
+    locationId : string,
 }
 
 interface AuthActions {
     setState: React.Dispatch<React.SetStateAction<AuthState>>;
-  }
+}
 
 const initialState: AuthState = {
     verifyEmail: () => Promise.resolve(null),
     userName: '',
     name: '',
-    // handleEmailChange: (name) => Promise.resolve(null),
-    // handleUserInfoChange: (name,value) => Promise.resolve(null),
-    handleUserNameSubmit: () => {},
+    handleUserNameSubmit: () => { },
     emailValidationMessage: '',
     nameValidationMessage: '',
-    categoriesId : [],
+    uxHandleValidationMessage: '',
+    categoriesId: [],
     isUserTypeExist: false,
     userType: '',
+    activePage: 1,
+    uxHandle: '',
+    password: '',
+    confirmPassword: '',
+    submitUxHandleInfo: () => Promise.resolve(null),
+    registerUser: () => Promise.resolve(null),
+    passwordValidationMessage: '',
+    locationId: '',
 }
 
 const initialActions: AuthActions = {
-    setState: () => {},
-  };
-  
+    setState: () => { },
+};
+
 const SignUpManagementContext = createContext<AuthState & AuthActions>({
     ...initialState,
     ...initialActions,
-  });
-  
+});
+
 type AuthReducerAction = Partial<AuthState> | ((prevState: AuthState) => AuthState);
 
 const reducer = (state: AuthState, action: AuthReducerAction) => {
-  if (typeof action === 'function') {
-    return action(state);
-  }
+    if (typeof action === 'function') {
+        return action(state);
+    }
 
-  return {
-    ...state,
-    ...action,
-  };
+    return {
+        ...state,
+        ...action,
+    };
 };
 
-// const reducer = (state: AuthState, action: Partial<AuthState>): AuthState => ({
-//     ...state,
-//     ...action,
-//   });
-
-
-//   const reducer = (state: AuthState, action: Partial<AuthState>) => ({
-//     ...state,
-//     ...action,
-//   });
-// const SignUpManagementContext = createContext<AuthState>(initialState);
-// const simpleReducer = (state: any, payload: any) => ({ ...state, ...payload });
 const SignUpManagementProvider = ({ children }: any) => {
 
-    // const [state, setState] = useReducer(simpleReducer, initialState);
-    // const [state, dispatch] = useReducer(reducer, initialState);
     const [state, setState] = useReducer(reducer, initialState);
-    const [activePage, setActivePage] = useState(4);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: ''
@@ -116,7 +121,11 @@ const SignUpManagementProvider = ({ children }: any) => {
                         })
                     }
                     else {
-                        setActivePage(2);
+                        setState(prevState => ({
+                            ...prevState,
+                            activePage: 2,
+                        }));
+                        // setActivePage(2);
                     }
                 }
             }
@@ -129,79 +138,211 @@ const SignUpManagementProvider = ({ children }: any) => {
         }
     }, [state?.userName]);
 
-    const handleUserNameSubmit = useCallback(()=>{
+    const handleUserNameSubmit = useCallback(() => {
         if (!state?.name) {
-            setState({
-                nameValidationMessage: state?.name.trim() ===''?'Name is required':''
-            })
+            setState(prevState => ({
+                ...prevState,
+                nameValidationMessage: state?.name.trim() === '' ? 'Name is required' : ''
+            }));
         }
         else {
-            setActivePage(4);
+            setState(prevState => ({
+                ...prevState,
+                activePage: 3,
+            }));
         }
-    },[state?.name])
+    }, [state?.name])
 
-    
+    const submitUxHandleInfo = useCallback(async () => {
+        if (!state?.uxHandle) {
+            setState(prevState => ({
+                ...prevState,
+                uxHandleValidationMessage: state?.uxHandle.trim() === '' ? 'Ux handle  is required' : '',
+            }));
+        }
+        else {
+            try {
+                const response = await fetch(`${BaseUrl}/auth/verify_ux_handle_exists`, {
+                    method: "POST",
+                    body: JSON.stringify({ uxHandle: state?.uxHandle }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.ok) {
+                    const res = await response.json();
+                    if (res?.data?.doesUxHandleExists) {
+                        setSnackbar({
+                            open: true,
+                            message: 'Email alredy exist'
+                        })
+                    }
+                    else {
+                        setState(prevState => ({
+                            ...prevState,
+                            activePage: 6,
+                        }));
+                        // setActivePage(2);
+                    }
+                }
+            }
+            catch (e) {
+                setSnackbar({
+                    open: true,
+                    message: 'error occoured'
+                })
+            }
+        }
+    }, [state?.uxHandle]);
 
-    
+    const validatePassword = useCallback(() => {
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{6}$/;
+        const isValid = regex.test(state?.password);
+        return isValid;
+    }, [state?.password])
 
-    // const handleEmailChange = useCallback((username: String) => {
-    //     setState({
-    //         userName: username,
-    //         emailValidationMessage: validateEmail(username)
-    //     })
-    // }, [])
+    const registerUser = useCallback(async () => {
+        const isPasswordValid = validatePassword();
+        debugger;
+        if (isPasswordValid) {
+            if (state?.password != state?.confirmPassword) {
+                setState(prevState => ({
+                    ...prevState,
+                    passwordValidationMessage: 'Password and Confirm password do not match',
+                }));
+            }
+            else if (isPasswordValid && state?.password === state?.confirmPassword) {
+                setState(prevState => ({
+                    ...prevState,
+                    passwordValidationMessage: '',
+                }));
+                try {
+                    const data = registerUserPayload();
+                    const response = await fetch(`${BaseUrl}/auth/register`, {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    if (response.ok) {
+                        const res = await response.json();
+                        await signInWithCustomToken(res?.data?.customToken)
+                    }
+                    else {
+                        setSnackbar({
+                            open: true,
+                            message: 'error occoured'
+                        })
+                    }
+                }
+                catch (e) {
+                    setSnackbar({
+                        open: true,
+                        message: 'error occoured'
+                    })
+                }
+            }
+        }
+        else if (!isPasswordValid) {
+            setState(prevState => ({
+                ...prevState,
+                passwordValidationMessage: 'Enter a 6 character password with capital letters, numbers and symbols.',
+            }));
+        }
+    }, [state?.password,state?.confirmPassword])
 
-    // const handleUserInfoChange = useCallback((name: String,value: String) => {
-    //     switch(name){
-    //         case 'Email':
-    //             setState({
-    //                 userName: value,
-    //                 emailValidationMessage: validateEmail(value)
-    //             })
-    //             break;
-    //         case 'Name':
-    //             setState({
-    //                 name: value,
-    //                 nameValidationMessage: value.trim() ===''?'Name is required':''
-    //             })
-    //             break;
-    //         case 'Categories':
-    //             setState({
-    //                 categoriesId : [],
-    //                 isPartner : false,
-    //             })
-    //             break;
-    //     }
-    // }, [])
+    const signInWithCustomToken = useCallback(async(token:string)=>{
+        try {
+            const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyAMCnjXuFQFC9_aKco_RusdDR-CVE4byNg`, {
+                method: "POST",
+                body: JSON.stringify({
+                    returnSecureToken: true,
+                    token: token,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const res = await response.json();
+                localStorage.setItem('authToken',res?.idToken);
+                setState(prevState => ({
+                    ...prevState,
+                    activePage: 7,
+                }));
+            }
+            else {
+                setSnackbar({
+                    open: true,
+                    message: 'error occoured'
+                })
+            }
+        }
+        catch (e) {
+            setSnackbar({
+                open: true,
+                message: 'error occoured'
+            })
+        }
+    },[])
 
-    // console.log(state, "testtt",activePage)
+
+    const registerUserPayload = useCallback(() => {
+        const payload = state?.isUserTypeExist ? {
+            name: state?.name,
+            email: state?.userName,
+            password: state?.password,
+            uxHandle: state?.uxHandle,
+            profileImageId: "",
+            userType: state?.userType,
+            isUserTypeExist: state?.isUserTypeExist,
+            locationId: state?.locationId
+        } : {
+            name: state?.name,
+            email: state?.userName,
+            password: state?.password,
+            uxHandle: state?.uxHandle,
+            profileImageId: "",
+            isUserTypeExist: false,
+            CategoriesIds: state?.categoriesId,
+            locationId: state?.locationId
+        }
+        return payload;
+    }, [state])
+   
     const value = useMemo(
         () => ({
             ...state,
             verifyEmail,
-            // handleEmailChange,
-            // handleUserInfoChange,
             handleUserNameSubmit,
             setState,
+            submitUxHandleInfo,
+            registerUser,
         }),
         [
             state,
             verifyEmail,
-            // handleEmailChange,
-            // handleUserInfoChange,
             handleUserNameSubmit,
             setState,
+            submitUxHandleInfo,
+            registerUser,
         ]
     );
 
-    //console.log(state,"testttt")
+    console.log(state,"testttt")
     return (
         <>
             <SignUpManagementContext.Provider value={value}>
                 {children}
-                {activePage === 1 && <SignUp />}
-                {activePage === 2 && <UserInfo />}
-                {activePage === 4  && <UserCategories/>}
+                {state?.activePage === 1 && <SignUp />}
+                {state?.activePage === 2 && <UserInfo />}
+                {state?.activePage === 3 && <UserContactInfo />}
+                {state?.activePage === 4 && <UserCategories />}
+                {state?.activePage === 5 && <ClaimUxHandle />}
+                {state?.activePage === 6 && <UserPassword />}
+                {state?.activePage === 7 && state?.isUserTypeExist && <PartnerThankYou/>}
+                {state?.activePage === 7 && !state?.isUserTypeExist && <UxThankYou />}
                 <Snackbar
                     open={snackbar?.open}
                     autoHideDuration={6000}

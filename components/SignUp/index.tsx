@@ -7,7 +7,7 @@ const SignUp =()=>{
    
     const {verifyEmail,setState,...state} = useSignUpManagement();
 
-    const handleEmailChange = useCallback((username: String) => {
+    const handleEmailChange = useCallback((username: string) => {
         setState(prevState => ({
             ...prevState,
             userName: username,

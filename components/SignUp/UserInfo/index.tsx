@@ -4,7 +4,7 @@ import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 const UserInfo = () => {
     const {handleUserNameSubmit, setState, ...state } = useSignUpManagement();
     
-    const handleUserNameChange = useCallback((value: String) => {
+    const handleUserNameChange = useCallback((value: string) => {
         setState(prevState => ({
             ...prevState,
             name: value,
