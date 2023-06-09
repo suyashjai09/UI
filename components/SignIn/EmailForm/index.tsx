@@ -4,11 +4,13 @@ import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useSignUpManagement } from '@/utils/context/SignUpMangement';
+interface Props {
+  setShowEmailForm: (isLoading: boolean) => void,
+  setEmail: (email: string) => void,
+}
 
-const SignUp = () => {
+const EmailForm = ({setShowEmailForm,setEmail}:Props) => {
 
-  const { verifyEmail, setState, ...state } = useSignUpManagement();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Enter valid email')
@@ -20,12 +22,9 @@ const SignUp = () => {
       email: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
-      setState(prevState => ({
-        ...prevState,
-        userName: values?.email
-      }));
-      await verifyEmail(values?.email);
+    onSubmit: (values) => {
+        setShowEmailForm(false);
+        setEmail(values?.email);
     },
   });
 
@@ -49,4 +48,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default EmailForm;

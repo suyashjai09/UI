@@ -15,11 +15,11 @@ import validateEmail from "@/utils/validateEmail";
 import UserCategories from "@/components/SignUp/UserCategories";
 import ClaimUxHandle from "@/components/SignUp/ClaimUxHandle";
 import UserPassword from "@/components/SignUp/UserPassword";
-import { verify } from "crypto";
 import UserContactInfo from "@/components/SignUp/UserContactInfo";
 import UxThankYou from "@/components/SignUp/UxThankYou";
 import PartnerThankYou from "@/components/SignUp/ParterThankYou";
 import LandingPage from "@/components/LandingPage";
+import { useAuth } from "../AuthContext";
 
 
 interface AuthState {
@@ -58,7 +58,7 @@ const initialState: AuthState = {
     categoriesId: [],
     isUserTypeExist: false,
     userType: '',
-    activePage: 5,
+    activePage: 1,
     uxHandle: '',
     password: '',
     confirmPassword: '',
@@ -92,6 +92,7 @@ const reducer = (state: AuthState, action: AuthReducerAction) => {
 
 const SignUpManagementProvider = ({ children }: any) => {
 
+    const {getFireBaseToken} = useAuth();
     const [state, setState] = useReducer(reducer, initialState);
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -240,20 +241,8 @@ const SignUpManagementProvider = ({ children }: any) => {
     }, [state?.password,state?.confirmPassword])
 
     const signInWithCustomToken = useCallback(async(token:string)=>{
-        try {
-            const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyAMCnjXuFQFC9_aKco_RusdDR-CVE4byNg`, {
-                method: "POST",
-                body: JSON.stringify({
-                    returnSecureToken: true,
-                    token: token,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (response.ok) {
-                const res = await response.json();
-                localStorage.setItem('authToken',res?.idToken);
+            const response = await getFireBaseToken(token);
+            if (response) {
                 setState(prevState => ({
                     ...prevState,
                     activePage: 7,
@@ -265,13 +254,6 @@ const SignUpManagementProvider = ({ children }: any) => {
                     message: 'error occoured'
                 })
             }
-        }
-        catch (e) {
-            setSnackbar({
-                open: true,
-                message: 'error occoured'
-            })
-        }
     },[])
 
 
@@ -317,7 +299,6 @@ const SignUpManagementProvider = ({ children }: any) => {
         ]
     );
 
-    // console.log(state,"testttt")
     return (
         <>
             <SignUpManagementContext.Provider value={value}>
