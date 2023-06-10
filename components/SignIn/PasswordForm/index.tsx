@@ -65,7 +65,19 @@ const PasswordForm = ({ email }: Props) => {
                         ),
                     }}
                 />
-                <Button type="submit">Next</Button>
+                <Button type="submit" sx={{
+                    width: '156px',
+                    height: '60px',
+                    backgroundColor: 'grey',
+                    border: 'none',
+                    textTransform: 'none',
+                    color: '#000',
+                    fontSize: '24px',
+                    fontWeight: '700',
+                    '&:hover': {
+                        backgroundColor: 'grey',
+                    },
+                }}>Next</Button>
             </form>
         </Box>
     );

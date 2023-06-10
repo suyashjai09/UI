@@ -9,7 +9,7 @@ interface Props {
   setEmail: (email: string) => void,
 }
 
-const EmailForm = ({setShowEmailForm,setEmail}:Props) => {
+const EmailForm = ({ setShowEmailForm, setEmail }: Props) => {
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -23,8 +23,8 @@ const EmailForm = ({setShowEmailForm,setEmail}:Props) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-        setShowEmailForm(false);
-        setEmail(values?.email);
+      setShowEmailForm(false);
+      setEmail(values?.email);
     },
   });
 
@@ -42,7 +42,19 @@ const EmailForm = ({setShowEmailForm,setEmail}:Props) => {
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
         />
-        <Button type="submit">Continue</Button>
+        <Button sx={{
+          width: '156px',
+          height: '60px',
+          backgroundColor: 'grey',
+          border: 'none',
+          textTransform: 'none',
+          color: '#000',
+          fontSize: '24px',
+          fontWeight: '700',
+          '&:hover': {
+            backgroundColor: 'grey',
+          },
+        }} type="submit">Continue</Button>
       </form>
     </Box>
   );

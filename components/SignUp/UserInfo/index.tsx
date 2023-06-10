@@ -27,20 +27,32 @@ const UserInfo = () => {
 
     return (
         <>
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px' ,flexDirection: 'column'}}>
-            <Typography variant="h3" component="h3">Enter your name</Typography>
-                <form onSubmit={formik.handleSubmit}>
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
+                <Typography variant="h3" component="h3">What’s your name?</Typography>
+                <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
                     <TextField
                         type='text'
                         variant="outlined"
-                        label="Name" name="name" 
+                        label="Name" name="name"
                         placeholder="Enter your name"
                         value={formik.values.name}
                         onChange={formik.handleChange}
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name && formik.errors.name}
                     />
-                    <Button type="submit">Continue</Button>
+                    <Button sx={{
+                        width: '156px',
+                        height: '60px',
+                        backgroundColor: 'grey',
+                        border: 'none',
+                        textTransform: 'none',
+                        color: '#000',
+                        fontSize: '24px',
+                        fontWeight: '700',
+                        '&:hover': {
+                            backgroundColor: 'grey',
+                        },
+                    }} type="submit">Continue</Button>
                 </form>
             </Box>
         </>

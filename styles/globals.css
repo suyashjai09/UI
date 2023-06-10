@@ -15,3 +15,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+  width: 400px;
+  height: 40px;
+}

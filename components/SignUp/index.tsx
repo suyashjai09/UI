@@ -20,7 +20,7 @@ const SignUp = () => {
       email: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    onSubmit: async (values) => {
       setState(prevState => ({
         ...prevState,
         userName: values?.email
@@ -43,7 +43,19 @@ const SignUp = () => {
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
         />
-        <Button type="submit">Continue</Button>
+        <Button type="submit" sx={{
+          width: '156px',
+          height: '60px',
+          backgroundColor: 'grey',
+          border: 'none',
+          textTransform: 'none',
+          color: '#000',
+          fontSize: '24px',
+          fontWeight: '700',
+          '&:hover': {
+            backgroundColor: 'grey',
+          },
+        }} >Continue</Button>
       </form>
     </Box>
   );

@@ -16,8 +16,8 @@ const UserCategories = () => {
     const [categories, setCategories] = useState<SomeInterface[]>([]);
     const [radioButtonValue, setRadioButtonValue] = useState('');
     const [selectedIndustries, setIndustries] = useState<string[]>([])
-    const [errorMessage,setErrorMessage] = useState('');
-    const {setState} = useSignUpManagement();
+    const [errorMessage, setErrorMessage] = useState('');
+    const { setState } = useSignUpManagement();
 
     const userType = [
         'Recruitment',
@@ -67,21 +67,21 @@ const UserCategories = () => {
         }
     }, [])
 
-    const handleUserCategoryChange = useCallback(()=>{
-           if(selectedIndustries.length === 0 && radioButtonValue.length === 0 ){
-             setErrorMessage('Select any field');
-           }   
-           else {
+    const handleUserCategoryChange = useCallback(() => {
+        if (selectedIndustries.length === 0 && radioButtonValue.length === 0) {
+            setErrorMessage('Select any field');
+        }
+        else {
             setState(prevState => ({
                 ...prevState,
-                categoriesId : selectedIndustries,
+                categoriesId: selectedIndustries,
                 isUserTypeExist: selectedIndustries.length === 0 ? true : false,
                 userType: radioButtonValue,
                 activePage: 5,
-              }));
-           }
+            }));
+        }
 
-    },[selectedIndustries,radioButtonValue])
+    }, [selectedIndustries, radioButtonValue])
 
 
     useEffect(() => {
@@ -90,11 +90,22 @@ const UserCategories = () => {
 
 
     return (
-        <>
+        <Stack
+            sx={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                gap:'24px',
+                m: '0 auto',
+                padding: '8px 0px',
+                overflow: 'auto'
+            }}>
             <Grid container
                 justifyContent={'center'}
+                maxWidth="750px"
+                rowGap={2}
             >
-                <Grid item>
+                <Grid item xs={6}>
                     <FormGroup>
                         {categories?.map((data) => {
                             return (
@@ -132,9 +143,21 @@ const UserCategories = () => {
                     </RadioGroup>
                 </Grid>
             </Grid>
-            <Button sx={{width:'100%',alignItems:'center'}} onClick={handleUserCategoryChange}>Next</Button>
-            {errorMessage && <Typography sx={{color:'red',width:'100%',alignItems:'center'}}>{errorMessage}</Typography>}
-        </>
+            <Button sx={{
+                width: '156px',
+                height: '60px',
+                backgroundColor: 'grey',
+                border: 'none',
+                textTransform: 'none',
+                color: '#000',
+                fontSize: '24px',
+                fontWeight: '700',
+                '&:hover': {
+                    backgroundColor: 'grey',
+                },
+            }} onClick={handleUserCategoryChange}>Next</Button>
+            {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center' }}>{errorMessage}</Typography>}
+        </Stack>
     )
 }
 

@@ -23,10 +23,10 @@ const ClaimUxHandle = () => {
                 ...prevState,
                 uxHandle: values?.uxHandle
             }));
-           if(!await submitUxHandleInfo(values?.uxHandle))
-           setUxHandleExist(true);
-           else 
-           setUxHandleExist(false);
+            if (!await submitUxHandleInfo(values?.uxHandle))
+                setUxHandleExist(true);
+            else
+                setUxHandleExist(false);
         },
     });
 
@@ -48,7 +48,19 @@ const ClaimUxHandle = () => {
                     <Typography>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it's gone.</Typography>
                     {/* <TextField id="outlined-basic" label="Email" variant="outlined" name="Email" onChange={(e)=>handleUserInfoChange('Email',e.target.value)}/> */}
                     {uxHandleExist && <Typography sx={{ color: 'red' }}>This handle has been taken - please try another one</Typography>}
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" sx={{
+                        width: '156px',
+                        height: '60px',
+                        backgroundColor: 'grey',
+                        border: 'none',
+                        textTransform: 'none',
+                        color: '#000',
+                        fontSize: '24px',
+                        fontWeight: '700',
+                        '&:hover': {
+                            backgroundColor: 'grey',
+                        },
+                    }}>Continue</Button>
                 </form>
             </Box>
         </>
