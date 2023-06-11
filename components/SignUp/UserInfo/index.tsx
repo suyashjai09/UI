@@ -33,7 +33,7 @@ const UserInfo = () => {
                     <TextField
                         type='text'
                         variant="outlined"
-                        label="Name" name="name"
+                        label="" name="name"
                         placeholder="Enter your name"
                         value={formik.values.name}
                         onChange={formik.handleChange}

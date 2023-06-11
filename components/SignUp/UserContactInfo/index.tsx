@@ -70,7 +70,8 @@ const UserContactInfo = () => {
 
 
     return (
-        <Box sx={{ display: 'flex', gap: '32px', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', gap: '32px', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant='h3'>Your phone number and city</Typography>
             <Box sx={{ display: 'flex', gap: '16px' }}>
                 <FormControl>
                     {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
@@ -78,7 +79,16 @@ const UserContactInfo = () => {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={"+61"}
-                        label="+61"
+                        label=""
+                        placeholder="+61"
+                        sx={{
+                            '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select': {
+                                height: '42px',
+                                width: '40px',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }
+                        }}
                     // onChange={handleChange}
                     >
                         <MenuItem value={"+61"}>+61</MenuItem>
@@ -86,17 +96,26 @@ const UserContactInfo = () => {
                         {/* <MenuItem value={30}>Thirty</MenuItem> */}
                     </Select>
                 </FormControl>
-                <TextField id="outlined-basic" label="Phone number is optional " variant="outlined" />
+                <TextField id="outlined-basic" label="" placeholder="Phone number is optional " variant="outlined" />
             </Box>
-            <Box>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Select Country</InputLabel>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                <FormControl>
+                    <InputLabel id="demo-simple-select-label">Select your closest city</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={state?.locationId}
-                        label="Select Country"
+                        // label="Select your closest city"
+                        // placeholder="Select your closest city"
                         onChange={handleChange}
+                        sx={{
+                            '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                                height: '42px',
+                                width: '480px',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }
+                        }}
                     >
                         {userLocationList?.map((data) => {
                             return (
@@ -105,21 +124,22 @@ const UserContactInfo = () => {
                         })}
                     </Select>
                 </FormControl>
-                <Button sx={{
-                    width: '156px',
-                    height: '60px',
-                    backgroundColor: 'grey',
-                    border: 'none',
-                    textTransform: 'none',
-                    color: '#000',
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    '&:hover': {
-                        backgroundColor: 'grey',
-                    },
-                }} onClick={handleFormSubmit}>Next</Button>
+
             </Box>
-            {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center' }}>{errorMessage}</Typography>}
+            <Button sx={{
+                width: '156px',
+                height: '60px',
+                backgroundColor: 'grey',
+                border: 'none',
+                textTransform: 'none',
+                color: '#000',
+                fontSize: '24px',
+                fontWeight: '700',
+                '&:hover': {
+                    backgroundColor: 'grey',
+                },
+            }} onClick={handleFormSubmit}>Next</Button>
+            {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center',textAlign:'center' }}>{errorMessage}</Typography>}
         </Box>
     )
 }

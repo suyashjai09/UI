@@ -40,9 +40,10 @@ const PasswordForm = ({ email }: Props) => {
         <Box>
             <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px' }}>
                 <TextField
+                    className='password-form'
                     type={showPassword ? 'text' : 'password'}
                     variant="outlined"
-                    label="Password"
+                    label=""
                     name="password"
                     placeholder="Enter Password"
                     value={formik.values.password}

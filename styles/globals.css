@@ -18,5 +18,12 @@ body {
 
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
   width: 400px;
-  height: 40px;
+  height: 42px;
+}
+
+.password-form{
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+    width: 400px;
+    height: 42px;
+  }
 }

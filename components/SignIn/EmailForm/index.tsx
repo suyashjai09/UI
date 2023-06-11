@@ -34,7 +34,7 @@ const EmailForm = ({ setShowEmailForm, setEmail }: Props) => {
         <TextField
           variant="outlined"
           type="email"
-          label="Email"
+          label=""
           name="email"
           placeholder="Username or email"
           value={formik.values.email}

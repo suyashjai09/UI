@@ -23,10 +23,10 @@ import { useAuth } from "../AuthContext";
 
 
 interface AuthState {
-    verifyEmail: (email:string) => Promise<any>
+    verifyEmail: (email: string) => Promise<any>
     userName: string,
     name: string,
-    handleUserNameSubmit: (name:string) => void;
+    handleUserNameSubmit: (name: string) => void;
     emailValidationMessage: string,
     nameValidationMessage: string,
     uxHandleValidationMessage: string,
@@ -37,21 +37,22 @@ interface AuthState {
     uxHandle: string,
     password: string,
     confirmPassword: string,
-    submitUxHandleInfo: (uxHandle:string) => Promise<any>
-    registerUser: () => Promise<any>,
+    submitUxHandleInfo: (uxHandle: string) => Promise<any>
+    registerUser: (password: string, confirmPassword: string) => Promise<any>,
     passwordValidationMessage: string,
-    locationId : string,
+    locationId: string,
 }
 
 interface AuthActions {
     setState: React.Dispatch<React.SetStateAction<AuthState>>;
 }
 
+
 const initialState: AuthState = {
-    verifyEmail: (email:string) => Promise.resolve(null),
+    verifyEmail: (email: string) => Promise.resolve(null),
     userName: '',
     name: '',
-    handleUserNameSubmit: (name:string) => { },
+    handleUserNameSubmit: (name: string) => { },
     emailValidationMessage: '',
     nameValidationMessage: '',
     uxHandleValidationMessage: '',
@@ -62,7 +63,7 @@ const initialState: AuthState = {
     uxHandle: '',
     password: '',
     confirmPassword: '',
-    submitUxHandleInfo: (uxHandle:string) => Promise.resolve(null),
+    submitUxHandleInfo: (uxHandle: string) => Promise.resolve(null),
     registerUser: () => Promise.resolve(null),
     passwordValidationMessage: '',
     locationId: '',
@@ -92,161 +93,131 @@ const reducer = (state: AuthState, action: AuthReducerAction) => {
 
 const SignUpManagementProvider = ({ children }: any) => {
 
-    const {getFireBaseToken} = useAuth();
+    const { getFireBaseToken } = useAuth();
     const [state, setState] = useReducer(reducer, initialState);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: ''
     });
 
-    const verifyEmail = useCallback(async (email:string) => {  
-            try {
-                setState(prevState => ({
-                    ...prevState,
-                    userName: email
-                  }));
-                const response = await fetch(`${BaseUrl}/auth/verify_email_exists`, {
-                    method: "POST",
-                    body: JSON.stringify({ email: email }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (response.ok) {
-                    const res = await response.json();
-                    if (res?.data?.doesEmailExists) {
-                        setSnackbar({
-                            open: true,
-                            message: 'Email alredy exist'
-                        })
-                    }
-                    else {
-                        setState(prevState => ({
-                            ...prevState,
-                            activePage: 2,
-                        }));
-                        // setActivePage(2);
-                    }
-                }
-            }
-            catch (e) {
-                setSnackbar({
-                    open: true,
-                    message: 'error occoured'
-                })
-            }
-    }, []);
-
-    const handleUserNameSubmit = useCallback((name:string) => {
-        
+    const verifyEmail = useCallback(async (email: string) => {
+        try {
             setState(prevState => ({
                 ...prevState,
-                name:name,
-                activePage: 3,
+                userName: email
             }));
-        
-    }, [])
-
-    const submitUxHandleInfo = useCallback(async (uxHandle:string) => {
-            try {
-                setState(prevState => ({
-                    ...prevState,
-                    uxHandle: uxHandle,
-                }));
-                const response = await fetch(`${BaseUrl}/auth/verify_ux_handle_exists`, {
-                    method: "POST",
-                    body: JSON.stringify({ uxHandle: uxHandle }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (response.ok) {
-                    const res = await response.json();
-                    if (res?.data?.doesUxHandleExists) {
-                        return false;
-                    }
-                    else {
-
-                        setState(prevState => ({
-                            ...prevState,
-                            activePage: 6,
-                        }));
-                        return true;
-                        // setActivePage(2);
-                    }
-                }
-            }
-            catch (e) {
-                setSnackbar({
-                    open: true,
-                    message: 'error occoured'
-                })
-            }
-    }, []);
-
-    const validatePassword = useCallback(() => {
-        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{6}$/;
-        const isValid = regex.test(state?.password);
-        return isValid;
-    }, [state?.password])
-
-    const registerUser = useCallback(async () => {
-        const isPasswordValid = validatePassword();
-        if (isPasswordValid) {
-            if (state?.password != state?.confirmPassword) {
-                setState(prevState => ({
-                    ...prevState,
-                    passwordValidationMessage: 'Password and Confirm password do not match',
-                }));
-            }
-            else if (isPasswordValid && state?.password === state?.confirmPassword) {
-                setState(prevState => ({
-                    ...prevState,
-                    passwordValidationMessage: '',
-                }));
-                try {
-                    const data = registerUserPayload();
-                    const response = await fetch(`${BaseUrl}/auth/register`, {
-                        method: "POST",
-                        body: JSON.stringify(data),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-                    if (response.ok) {
-                        const res = await response.json();
-                        await signInWithCustomToken(res?.data?.customToken)
-                    }
-                    else {
-                        setSnackbar({
-                            open: true,
-                            message: 'error occoured'
-                        })
-                    }
-                }
-                catch (e) {
+            const response = await fetch(`${BaseUrl}/auth/verify_email_exists`, {
+                method: "POST",
+                body: JSON.stringify({ email: email }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const res = await response.json();
+                if (res?.data?.doesEmailExists) {
                     setSnackbar({
                         open: true,
-                        message: 'error occoured'
+                        message: 'Email alredy exist'
                     })
+                }
+                else {
+                    setState(prevState => ({
+                        ...prevState,
+                        activePage: 2,
+                    }));
+                    // setActivePage(2);
                 }
             }
         }
-        else if (!isPasswordValid) {
+        catch (e) {
+            setSnackbar({
+                open: true,
+                message: 'error occoured'
+            })
+        }
+    }, []);
+
+    const handleUserNameSubmit = useCallback((name: string) => {
+
+        setState(prevState => ({
+            ...prevState,
+            name: name,
+            activePage: 3,
+        }));
+
+    }, [])
+
+    const submitUxHandleInfo = useCallback(async (uxHandle: string) => {
+        try {
             setState(prevState => ({
                 ...prevState,
-                passwordValidationMessage: 'Enter a 6 character password with capital letters, numbers and symbols.',
+                uxHandle: uxHandle,
             }));
-        }
-    }, [state?.password,state?.confirmPassword])
+            const response = await fetch(`${BaseUrl}/auth/verify_ux_handle_exists`, {
+                method: "POST",
+                body: JSON.stringify({ uxHandle: uxHandle }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const res = await response.json();
+                if (res?.data?.doesUxHandleExists) {
+                    return false;
+                }
+                else {
 
-    const signInWithCustomToken = useCallback(async(token:string)=>{
-            const response = await getFireBaseToken(token);
-            if (response) {
-                setState(prevState => ({
-                    ...prevState,
-                    activePage: 7,
-                }));
+                    setState(prevState => ({
+                        ...prevState,
+                        activePage: 6,
+                    }));
+                    return true;
+                    // setActivePage(2);
+                }
+            }
+        }
+        catch (e) {
+            setSnackbar({
+                open: true,
+                message: 'error occoured'
+            })
+        }
+    }, []);
+
+    const registerUser = useCallback(async (password: string, confirmPassword: string) => {
+        try {
+            // console.log(state, "ru")
+            // const data = registerUserPayload();
+            const data = state?.isUserTypeExist ? {
+                name: state?.name,
+                email: state?.userName,
+                password: password,
+                uxHandle: state?.uxHandle,
+                profileImageId: "",
+                userType: state?.userType,
+                isUserTypeExist: state?.isUserTypeExist,
+                locationId: state?.locationId
+            } : {
+                name: state?.name,
+                email: state?.userName,
+                password: password,
+                uxHandle: state?.uxHandle,
+                profileImageId: "",
+                isUserTypeExist: false,
+                CategoriesIds: state?.categoriesId,
+                locationId: state?.locationId
+            }
+            const response = await fetch(`${BaseUrl}/auth/register`, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const res = await response.json();
+                await signInWithCustomToken(res?.data?.customToken)
             }
             else {
                 setSnackbar({
@@ -254,32 +225,33 @@ const SignUpManagementProvider = ({ children }: any) => {
                     message: 'error occoured'
                 })
             }
-    },[])
-
-
-    const registerUserPayload = useCallback(() => {
-        const payload = state?.isUserTypeExist ? {
-            name: state?.name,
-            email: state?.userName,
-            password: state?.password,
-            uxHandle: state?.uxHandle,
-            profileImageId: "",
-            userType: state?.userType,
-            isUserTypeExist: state?.isUserTypeExist,
-            locationId: state?.locationId
-        } : {
-            name: state?.name,
-            email: state?.userName,
-            password: state?.password,
-            uxHandle: state?.uxHandle,
-            profileImageId: "",
-            isUserTypeExist: false,
-            CategoriesIds: state?.categoriesId,
-            locationId: state?.locationId
         }
-        return payload;
+        catch (e) {
+            setSnackbar({
+                open: true,
+                message: 'error occoured'
+            })
+        }
     }, [state])
-   
+
+    const signInWithCustomToken = useCallback(async (token: string) => {
+        const response = await getFireBaseToken(token);
+        if (response) {
+            setState(prevState => ({
+                ...prevState,
+                activePage: 7,
+            }));
+        }
+        else {
+            setSnackbar({
+                open: true,
+                message: 'error occoured'
+            })
+        }
+    }, [])
+
+    // console.log(state, "testtt")
+
     const value = useMemo(
         () => ({
             ...state,
@@ -309,7 +281,7 @@ const SignUpManagementProvider = ({ children }: any) => {
                 {state?.activePage === 4 && <UserCategories />}
                 {state?.activePage === 5 && <ClaimUxHandle />}
                 {state?.activePage === 6 && <UserPassword />}
-                {state?.activePage === 7 && state?.isUserTypeExist && <PartnerThankYou/>}
+                {state?.activePage === 7 && state?.isUserTypeExist && <PartnerThankYou />}
                 {state?.activePage === 7 && !state?.isUserTypeExist && <UxThankYou />}
                 <Snackbar
                     open={snackbar?.open}

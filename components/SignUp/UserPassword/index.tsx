@@ -1,4 +1,4 @@
-import { TextField, IconButton, InputAdornment, Box, Button } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useFormik } from 'formik';
@@ -9,7 +9,7 @@ const UserPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const { setState } = useSignUpManagement();
+    const {registerUser, setState } = useSignUpManagement();
 
     const validationSchema = Yup.object().shape({
         password: Yup.string()
@@ -26,12 +26,14 @@ const UserPassword = () => {
             confirmPassword: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            // console.log(values);
+        onSubmit: async(values) => {
             setState(prevState => ({
                 ...prevState,
                 password: values?.password,
+                confirmPassword: values?.confirmPassword
             }));
+            await registerUser(values?.password,values?.confirmPassword);
+            
         },
     });
 
@@ -48,11 +50,14 @@ const UserPassword = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column', gap: '16px', width: '60%' }}>
-            <form onSubmit={formik.handleSubmit}>
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
+             <Typography variant="h3" component="h3">Create a password</Typography>
+            <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
                 <TextField
-                    label="Password"
+                    label=""
+                    className='password-form'
                     name="password"
+                    placeholder='Enter password'
                     type={showPassword ? 'text' : 'password'}
                     value={formik.values.password}
                     onChange={formik.handleChange}
@@ -76,8 +81,10 @@ const UserPassword = () => {
                 />
                 <TextField
                     type={showConfirmPassword ? 'text' : 'password'}
-                    label="Confirm Password"
+                    label=""
+                    className='password-form'
                     name="confirmPassword"
+                    placeholder='Confirm password'
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
@@ -98,7 +105,19 @@ const UserPassword = () => {
                         ),
                     }}
                 />
-                <Button type="submit">Next</Button>
+                <Button type="submit" sx={{
+                    width: '156px',
+                    height: '60px',
+                    backgroundColor: 'grey',
+                    border: 'none',
+                    textTransform: 'none',
+                    color: '#000',
+                    fontSize: '24px',
+                    fontWeight: '700',
+                    '&:hover': {
+                        backgroundColor: 'grey',
+                    },
+                }}>Next</Button>
             </form>
         </Box>
     );
