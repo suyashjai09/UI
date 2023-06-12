@@ -6,8 +6,8 @@ const PartnerThankYou = () => {
     return (
         <>
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
-                <Typography>Okay! We’ll be in touch</Typography>
-                <Typography>Awesome. Our UX.com.au team have your details.
+                <Typography variant='h1'>Okay! We’ll be in touch</Typography>
+                <Typography variant='h3'>Awesome. Our UX.com.au team have your details.
                     We will be in touch shorty. Thanks.</Typography>
                 <Typography>Where to next</Typography>
                 <Button sx={{

@@ -51,11 +51,16 @@ const UserPassword = () => {
 
     return (
         <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
-             <Typography variant="h3" component="h3">Create a password</Typography>
+             <Typography variant="h1" component="h1">Create a password</Typography>
             <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
                 <TextField
+                    sx={{
+                        '& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input':{
+                            width: '400px',
+                            height: '42px'
+                          }
+                    }}
                     label=""
-                    className='password-form'
                     name="password"
                     placeholder='Enter password'
                     type={showPassword ? 'text' : 'password'}
@@ -80,9 +85,14 @@ const UserPassword = () => {
                     }}
                 />
                 <TextField
+                     sx={{
+                        '& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input':{
+                            width: '400px',
+                            height: '42px'
+                          }
+                    }}
                     type={showConfirmPassword ? 'text' : 'password'}
                     label=""
-                    className='password-form'
                     name="confirmPassword"
                     placeholder='Confirm password'
                     value={formik.values.confirmPassword}

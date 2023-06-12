@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useSignUpManagement } from '@/utils/context/SignUpMangement';
+import { useTheme } from '@emotion/react';
+
 
 const SignUp = () => {
 
@@ -31,7 +33,7 @@ const SignUp = () => {
 
   return (
     <Box>
-      <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px' }}>
+      <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '24px' }}>
         <TextField
           variant="outlined"
           type="email"
@@ -50,6 +52,7 @@ const SignUp = () => {
           border: 'none',
           textTransform: 'none',
           color: '#000',
+          marginTop:'7px',
           fontSize: '24px',
           fontWeight: '700',
           '&:hover': {

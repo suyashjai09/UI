@@ -38,9 +38,14 @@ const PasswordForm = ({ email }: Props) => {
 
     return (
         <Box>
-            <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px' }}>
+            <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '24px' }}>
                 <TextField
-                    className='password-form'
+                     sx={{
+                        '&  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input':{
+                            width: '400px',
+                            height: '42px'
+                          }
+                    }}
                     type={showPassword ? 'text' : 'password'}
                     variant="outlined"
                     label=""
@@ -75,6 +80,7 @@ const PasswordForm = ({ email }: Props) => {
                     color: '#000',
                     fontSize: '24px',
                     fontWeight: '700',
+                    marginTop:'7px',
                     '&:hover': {
                         backgroundColor: 'grey',
                     },

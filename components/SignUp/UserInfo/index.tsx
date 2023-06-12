@@ -28,7 +28,7 @@ const UserInfo = () => {
     return (
         <>
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
-                <Typography variant="h3" component="h3">What’s your name?</Typography>
+                <Typography variant="h1">What’s your name?</Typography>
                 <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
                     <TextField
                         type='text'

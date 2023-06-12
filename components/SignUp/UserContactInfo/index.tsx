@@ -71,7 +71,7 @@ const UserContactInfo = () => {
 
     return (
         <Box sx={{ display: 'flex', gap: '32px', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant='h3'>Your phone number and city</Typography>
+            <Typography variant='h1'>Your phone number and city</Typography>
             <Box sx={{ display: 'flex', gap: '16px' }}>
                 <FormControl>
                     {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
