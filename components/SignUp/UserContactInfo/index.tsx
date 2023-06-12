@@ -3,6 +3,7 @@ import { useCallback, useEffect } from "react";
 import { BaseUrl } from "@/constant";
 import { useState } from "react";
 import { useSignUpManagement } from "@/utils/context/SignUpMangement";
+import { colors } from '@/utils/theme';
 interface UserLocation {
     id: string;
     location: string;
@@ -25,7 +26,6 @@ const UserContactInfo = () => {
             const res = await response.json();
             if (response.ok) {
                 setUserLocationList(res?.data);
-                console.log(res?.data, "api-hit")
             }
         }
         catch (e) {
@@ -129,14 +129,14 @@ const UserContactInfo = () => {
             <Button sx={{
                 width: '156px',
                 height: '60px',
-                backgroundColor: 'grey',
+                backgroundColor: colors.primaryButton,
                 border: 'none',
                 textTransform: 'none',
-                color: '#000',
+                color: colors.primaryButtonText,
                 fontSize: '24px',
                 fontWeight: '700',
                 '&:hover': {
-                    backgroundColor: 'grey',
+                    backgroundColor: colors.primaryButton,
                 },
             }} onClick={handleFormSubmit}>Next</Button>
             {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center',textAlign:'center' }}>{errorMessage}</Typography>}

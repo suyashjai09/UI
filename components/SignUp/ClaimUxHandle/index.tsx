@@ -3,6 +3,7 @@ import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { useCallback, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { colors } from '@/utils/theme';
 const ClaimUxHandle = () => {
     const { setState, submitUxHandleInfo, ...state } = useSignUpManagement();
 
@@ -57,14 +58,14 @@ const ClaimUxHandle = () => {
                     <Button type="submit" sx={{
                         width: '156px',
                         height: '60px',
-                        backgroundColor: 'grey',
+                        backgroundColor: colors.primaryButton,
                         border: 'none',
                         textTransform: 'none',
-                        color: '#000',
+                        color: colors.primaryButtonText,
                         fontSize: '24px',
                         fontWeight: '700',
                         '&:hover': {
-                            backgroundColor: 'grey',
+                            backgroundColor: colors.primaryButton,
                         },
                     }}>Continue</Button>
                 </form>

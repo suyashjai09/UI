@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { useTheme } from '@emotion/react';
+import { colors } from '@/utils/theme';
+import { Typography } from '@mui/material';
 
 
 const SignUp = () => {
@@ -32,7 +34,7 @@ const SignUp = () => {
   });
 
   return (
-    <Box>
+    <Box sx={{display:'flex',flexDirection:'column',gap:'24px',alignItems:'center'}}>
       <form onSubmit={formik.handleSubmit} style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '24px' }}>
         <TextField
           variant="outlined"
@@ -48,18 +50,21 @@ const SignUp = () => {
         <Button type="submit" sx={{
           width: '156px',
           height: '60px',
-          backgroundColor: 'grey',
+          backgroundColor: colors.primaryButton,
           border: 'none',
           textTransform: 'none',
-          color: '#000',
-          marginTop:'7px',
+          color: colors.primaryButtonText,
+          marginTop: '7px',
           fontSize: '24px',
           fontWeight: '700',
           '&:hover': {
-            backgroundColor: 'grey',
+            backgroundColor: colors.primaryButton,
           },
         }} >Continue</Button>
       </form>
+      <Box sx={{display:'flex',justifyContent:'flex-start'}}>
+        <Typography>Privacy is paramount . SignUp process is encripted</Typography>
+      </Box>
     </Box>
   );
 };

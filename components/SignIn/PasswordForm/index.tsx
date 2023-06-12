@@ -5,6 +5,7 @@ import { TextField, IconButton, InputAdornment, Box, Button, Typography } from '
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '@/utils/context/AuthContext';
+import { colors } from '@/utils/theme';
 interface Props {
     email: string,
 }
@@ -74,15 +75,15 @@ const PasswordForm = ({ email }: Props) => {
                 <Button type="submit" sx={{
                     width: '156px',
                     height: '60px',
-                    backgroundColor: 'grey',
+                    backgroundColor: colors.primaryButton,
                     border: 'none',
                     textTransform: 'none',
-                    color: '#000',
+                    color: colors.primaryButtonText,
                     fontSize: '24px',
                     fontWeight: '700',
                     marginTop:'7px',
                     '&:hover': {
-                        backgroundColor: 'grey',
+                        backgroundColor: colors.primaryButton,
                     },
                 }}>Next</Button>
             </form>

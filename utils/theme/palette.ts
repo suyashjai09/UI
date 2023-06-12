@@ -1,6 +1,5 @@
 import { type PaletteMode } from '@mui/material'
 import { type PaletteOptions } from '@mui/material/styles'
-import { color } from '@mui/system'
 export const colors = {
     primaryBackground: '#163A90',
     backgroundWhite: '#FFFFFF',
@@ -11,6 +10,8 @@ export const colors = {
     primaryError: '#E13A3A',
     primarySuccess: '#42AE40',
     primaryInactive: '#828282',
+    primaryButton:'#808080',
+    primaryButtonText:'#000',
     secondaryError: '#F3C6C6',
     secondarySuccess: '#C6F3D2',
     secondaryInactive: '#E3E3E3',

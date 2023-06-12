@@ -1,5 +1,6 @@
 import { TextField, Button, Typography, Stack } from '@mui/material';
 import { useState, useCallback } from 'react';
+import { colors } from '@/utils/theme';
 import Box from '@mui/material/Box';
 
 const PartnerThankYou = () => {
@@ -11,16 +12,16 @@ const PartnerThankYou = () => {
                     We will be in touch shorty. Thanks.</Typography>
                 <Typography>Where to next</Typography>
                 <Button sx={{
-                    width: '156px',
+                    width: '210px',
                     height: '60px',
-                    backgroundColor: 'grey',
+                    backgroundColor: colors.primaryButton,
                     border: 'none',
                     textTransform: 'none',
-                    color: '#000',
+                    color: colors.primaryButtonText,
                     fontSize: '24px',
                     fontWeight: '700',
                     '&:hover': {
-                        backgroundColor: 'grey',
+                        backgroundColor: colors.primaryButton,
                     },
                 }}>UI/UX Home</Button>
             </Box>

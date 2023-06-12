@@ -5,6 +5,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useSignUpManagement } from "@/utils/context/SignUpMangement";
+import { colors } from "@/utils/theme";
 interface SomeInterface {
     id: string;
     name: string;
@@ -95,65 +96,69 @@ const UserCategories = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                gap:'24px',
+                gap: '24px',
                 m: '0 auto',
                 padding: '8px 0px',
                 overflow: 'auto'
             }}>
             <Grid container
                 justifyContent={'center'}
-                maxWidth="750px"
+                width="750px"
                 rowGap={2}
             >
-                <Grid item xs={6}>
-                    <FormGroup>
-                        {categories?.map((data) => {
-                            return (
-                                <FormControlLabel label={`${data?.name} (${data?.shortHandle})`} key={data?.id}
-                                    control={
-                                        <Checkbox
-                                            checked={selectedIndustries.includes(data?.id)}
-                                            onClick={() => {
-                                                handleIndustries(data?.id);
-                                            }}
-                                        />} />
-                            )
-                        })}
-                    </FormGroup>
-                </Grid>
-                <Divider sx={{
-                    color: '#757575',
-                    width: '800px',
-                    borderBottomWidth: '2px',
-                    my: 2,
-                }} />
-                <Grid item>
-                    <RadioGroup value={radioButtonValue}
-                        onChange={handleRadioButton}>
-                        {userType?.map((data, index) => {
-                            return (
-                                <FormControlLabel label={data} key={index}
+                {categories?.map((data) => {
+                    return (
+                        <Grid item xs={6} key={data?.id}>
+                            <FormControlLabel label={`${data?.name} (${data?.shortHandle})`}
+                                control={
+                                    <Checkbox
+                                        checked={selectedIndustries.includes(data?.id)}
+                                        onClick={() => {
+                                            handleIndustries(data?.id);
+                                        }}
+                                    />} />
+                        </Grid>
+                    )
+                })}
+            </Grid>
+            <Divider sx={{
+                color: '#757575',
+                width: '800px',
+                borderBottomWidth: '2px',
+                my: 2,
+            }} />
+                <RadioGroup value={radioButtonValue}
+                    onChange={handleRadioButton}>
+                    <Grid container
+                        justifyContent={'center'}
+                        width="750px"
+                        rowGap={2}
+                    >
+                    {userType?.map((data, index) => {
+                        return (
+                            <Grid item xs={6} key={index}>
+                                <FormControlLabel label={data}
                                     control={
                                         <Radio
                                             onClick={handleRadioButton}
                                             value={data?.toLowerCase()}
                                         />} />
-                            )
-                        })}
-                    </RadioGroup>
-                </Grid>
-            </Grid>
+                            </Grid>
+                        )
+                    })}
+                    </Grid>
+                </RadioGroup>
             <Button sx={{
                 width: '156px',
                 height: '60px',
-                backgroundColor: 'grey',
+                backgroundColor: colors.primaryButton,
                 border: 'none',
                 textTransform: 'none',
-                color: '#000',
+                color: colors.primaryButtonText,
                 fontSize: '24px',
                 fontWeight: '700',
                 '&:hover': {
-                    backgroundColor: 'grey',
+                    backgroundColor: colors.primaryButton,
                 },
             }} onClick={handleUserCategoryChange}>Next</Button>
             {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center' }}>{errorMessage}</Typography>}

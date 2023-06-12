@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { colors } from '@/utils/theme';
 const UserInfo = () => {
     const { handleUserNameSubmit, setState, ...state } = useSignUpManagement();
 
@@ -43,14 +44,14 @@ const UserInfo = () => {
                     <Button sx={{
                         width: '156px',
                         height: '60px',
-                        backgroundColor: 'grey',
+                        backgroundColor: colors.primaryButton,
                         border: 'none',
                         textTransform: 'none',
-                        color: '#000',
+                        color: colors.primaryButtonText,
                         fontSize: '24px',
                         fontWeight: '700',
                         '&:hover': {
-                            backgroundColor: 'grey',
+                            backgroundColor: colors.primaryButton,
                         },
                     }} type="submit">Continue</Button>
                 </form>

@@ -8,7 +8,7 @@ import React, {
     useMemo,
     useCallback,
     useReducer,
-    useEffect,
+    
 } from "react";
 import { Snackbar } from "@mui/material";
 import validateEmail from "@/utils/validateEmail";
@@ -187,8 +187,6 @@ const SignUpManagementProvider = ({ children }: any) => {
 
     const registerUser = useCallback(async (password: string, confirmPassword: string) => {
         try {
-            // console.log(state, "ru")
-            // const data = registerUserPayload();
             const data = state?.isUserTypeExist ? {
                 name: state?.name,
                 email: state?.userName,
@@ -250,7 +248,7 @@ const SignUpManagementProvider = ({ children }: any) => {
         }
     }, [])
 
-    // console.log(state, "testtt")
+   
 
     const value = useMemo(
         () => ({
@@ -270,7 +268,7 @@ const SignUpManagementProvider = ({ children }: any) => {
             registerUser,
         ]
     );
-
+  
     return (
         <>
             <SignUpManagementContext.Provider value={value}>

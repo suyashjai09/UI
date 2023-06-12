@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { colors } from '@/utils/theme';
+import { Typography } from '@mui/material';
 interface Props {
   setShowEmailForm: (isLoading: boolean) => void,
   setEmail: (email: string) => void,
@@ -45,15 +47,15 @@ const EmailForm = ({ setShowEmailForm, setEmail }: Props) => {
         <Button sx={{
           width: '156px',
           height: '60px',
-          backgroundColor: 'grey',
+          backgroundColor: colors.primaryButton,
           border: 'none',
           textTransform: 'none',
-          color: '#000',
+          color: colors.primaryButtonText,
           fontSize: '24px',
           fontWeight: '700',
           marginTop:'7px',
           '&:hover': {
-            backgroundColor: 'grey',
+            backgroundColor: colors.primaryButton,
           },
         }} type="submit">Continue</Button>
       </form>
