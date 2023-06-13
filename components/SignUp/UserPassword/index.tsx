@@ -1,4 +1,4 @@
-import { TextField, IconButton, InputAdornment, Box, Button, Typography } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Box, Button, Typography, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useFormik } from 'formik';
@@ -7,8 +7,9 @@ import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { colors } from '@/utils/theme';
 
 const UserPassword = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState<Boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<Boolean>(false);
+    const [loading,setLoading]=useState<Boolean>(false);
 
     const {registerUser, setState } = useSignUpManagement();
 
@@ -28,13 +29,14 @@ const UserPassword = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async(values) => {
+            setLoading(true);
             setState(prevState => ({
                 ...prevState,
                 password: values?.password,
                 confirmPassword: values?.confirmPassword
             }));
             await registerUser(values?.password,values?.confirmPassword);
-            
+            setLoading(false);
         },
     });
 
@@ -128,7 +130,7 @@ const UserPassword = () => {
                     '&:hover': {
                         backgroundColor: colors.primaryButton,
                     },
-                }}>Next</Button>
+                }}>{loading?<CircularProgress/>:"Next"}</Button>
             </form>
         </Box>
     );

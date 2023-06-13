@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
@@ -7,12 +7,13 @@ import Box from '@mui/material/Box';
 import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { useTheme } from '@emotion/react';
 import { colors } from '@/utils/theme';
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 
 
 const SignUp = () => {
 
   const { verifyEmail, setState, ...state } = useSignUpManagement();
+  const [loading,setLoading]=useState<Boolean>(false);
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Enter valid email')
@@ -25,11 +26,13 @@ const SignUp = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       setState(prevState => ({
         ...prevState,
         userName: values?.email
       }));
       await verifyEmail(values?.email);
+      setLoading(false);
     },
   });
 
@@ -60,7 +63,7 @@ const SignUp = () => {
           '&:hover': {
             backgroundColor: colors.primaryButton,
           },
-        }} >Continue</Button>
+        }} >{loading?<CircularProgress/>:"Continue"}</Button>
       </form>
       <Box sx={{display:'flex',justifyContent:'flex-start'}}>
         <Typography>Privacy is paramount . SignUp process is encripted</Typography>

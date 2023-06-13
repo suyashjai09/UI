@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, Stack, Box } from '@mui/material';
+import { TextField, Button, Typography, Stack, Box, CircularProgress } from '@mui/material';
 import { useSignUpManagement } from '@/utils/context/SignUpMangement';
 import { useCallback, useState } from 'react';
 import { useFormik } from 'formik';
@@ -7,7 +7,8 @@ import { colors } from '@/utils/theme';
 const ClaimUxHandle = () => {
     const { setState, submitUxHandleInfo, ...state } = useSignUpManagement();
 
-    const [uxHandleExist, setUxHandleExist] = useState(false);
+    const [uxHandleExist, setUxHandleExist] = useState<Boolean>(false);
+    const [loading,setLoading]=useState<Boolean>(false);
 
     const validationSchema = Yup.object({
         uxHandle: Yup.string()
@@ -20,6 +21,7 @@ const ClaimUxHandle = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            setLoading(true);
             setState(prevState => ({
                 ...prevState,
                 uxHandle: values?.uxHandle
@@ -28,6 +30,7 @@ const ClaimUxHandle = () => {
                 setUxHandleExist(true);
             else
                 setUxHandleExist(false);
+            setLoading(false);
         },
     });
 
@@ -67,7 +70,7 @@ const ClaimUxHandle = () => {
                         '&:hover': {
                             backgroundColor: colors.primaryButton,
                         },
-                    }}>Continue</Button>
+                    }}>{loading?<CircularProgress/>:"Continue"}</Button>
                 </form>
             </Box>
         </>
