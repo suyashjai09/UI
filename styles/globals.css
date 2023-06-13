@@ -14,6 +14,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    margin: 0px;
 }
 
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{

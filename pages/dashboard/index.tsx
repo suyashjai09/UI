@@ -1,9 +1,17 @@
-import { Typography } from "@mui/material"
+import DashboardHeader from "@/components/Dashboard/DashboardHeader";
+import { Box, Stack, Typography } from "@mui/material"
 
 const Dashboard=()=>{
     return(
         <>
-        <Typography>This is daashboard</Typography>
+        <Box>
+            <Stack>
+              <DashboardHeader/>
+            </Stack>
+            {/* <Stack>
+
+            </Stack> */}
+        </Box>
         </>
     )
 }

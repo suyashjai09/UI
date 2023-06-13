@@ -1,7 +1,8 @@
 import { type PaletteMode } from '@mui/material'
 import { type PaletteOptions } from '@mui/material/styles'
 export const colors = {
-    primaryBackground: '#163A90',
+    primaryBackground: '#C4C4C4',
+    primaryHeadingText:'#333333',
     backgroundWhite: '#FFFFFF',
     primaryWhite: '#FFFFFF',
     primaryBlack: '#000000',

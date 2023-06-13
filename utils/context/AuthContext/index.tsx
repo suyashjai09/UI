@@ -13,21 +13,21 @@ import { Router, useRouter } from "next/router";
 
 interface AuthState {
     signIn: (email: string, password: string) => Promise<any>
-    // signOut: () => void
-    signOut: () => Promise<any>
+    signOut: () => void
     authFetch: (...arg: any) => Promise<any>
     authToken: null | string,
-    getFireBaseToken: (token: string) => Promise<any>
+    getFireBaseToken: (token: string) => Promise<any>,
+    loading: Boolean,
 }
 
 
 const initialState: AuthState = {
     signIn: (email: string, password: string) => Promise.resolve(null),
-    // signOut: () => {},
-    signOut: () => Promise.resolve(null),
+    signOut: () => {},
     authFetch: (...arg: any) => Promise.resolve(null),
     authToken: 'loading',
     getFireBaseToken: (token: string) => Promise.resolve(null),
+    loading: false,
 }
 
 
@@ -48,6 +48,8 @@ const AuthContextProvider = ({ children }: any) => {
     const router = useRouter();
 
     const [state, setState] = useReducer(reducer, initialState);
+
+    const [loading,setLoading] = useState<Boolean>(false);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -126,6 +128,7 @@ const AuthContextProvider = ({ children }: any) => {
 
     const signIn = useCallback(async (email: string, password: string) => {
         try {
+            setLoading(true);
             const response = await fetch(`${BaseUrl}/auth/login`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -142,24 +145,43 @@ const AuthContextProvider = ({ children }: any) => {
                     router.push('/dashboard');
             }
             else {
-
+               return false;
             }
         }
         catch (e) {
+            return false;
             console.log(e, "error while loggin")
         }
+        finally {
+            setLoading(false);
+        }
+    }, [])
+
+    const signOut = useCallback(() => {
+        setLoading(true);
+        localStorage.removeItem('authToken');
+        setState({
+            ...state,
+            authToken: null,
+        })
+        setLoading(false);
+        router.replace('/signin');
     }, [])
 
     const value = useMemo(
         () => ({
             ...state,
             signIn,
+            signOut,
             getFireBaseToken,
+            loading,
         }),
         [
             state,
             signIn,
+            signOut,
             getFireBaseToken,
+            loading
         ]
     );
 

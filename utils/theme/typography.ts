@@ -39,6 +39,12 @@ const createTypography: Func = () => ({
     fontWeight: 400,
     color: colors.primaryText,
     fontFamily: 'Roboto',
-  }
+  },
+  h4: {
+    fontSize: '58px',
+    fontWeight: 700,
+    color: colors.primaryHeadingText,
+    fontFamily: 'Roboto',
+  },
 })
 export { createTypography }
