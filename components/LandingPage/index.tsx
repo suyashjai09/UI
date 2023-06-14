@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -12,40 +13,31 @@ import { Container, Tabs } from '@mui/material';
 import { Router, useRouter } from 'next/router';
 import SignIn from '../SignIn';
 const LandingPage = () => {
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = useState<string>("1");
   const router = useRouter();
 
+  const tabRoutes = [
+    { route: '/signup', label: 'Signup' ,value:"1"},
+    { route: '/signin', label: 'Login' ,value:"2"},
+  ];
+
+  const activeTabIndex = useMemo(() => {
+    return tabRoutes[tabRoutes.findIndex((route) => route?.route === router?.pathname)].value;
+  }, [router.pathname]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-      setValue(newValue);
-      if (newValue === "1") {
-          router.replace('/signup')
-      } else {
-          router.replace('/signin')
-      }  
+    if (newValue === "1") {
+      router.replace('/signup')
+    } else {
+      router.replace('/signin')
+    }
   };
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (router.pathname === '/signin') {
-      setValue("2");
-    }
-    else {
-      setValue("1");
-    }
-  }, [value,router])
-
-//   useEffect(() => {
-//     const urlPath = router.asPath
-//     const pathArray = urlPath.split('/')
-//     const path = pathArray[pathArray.length - 1]
-//     path === 'signup' && setValue("1")
-//     path === 'signin' && setValue("2")
-// }, [])
+  
 
   return (
     <Container disableGutters maxWidth={false}>
-      <TabContext value={value}>
+      <TabContext value={activeTabIndex}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
           {/* <Tabs
             TabIndicatorProps={{
@@ -70,7 +62,7 @@ const LandingPage = () => {
             <Tab sx={{ width: '100%',borderBottom:value == "1"?'3px solid #000':'0' }} label="Signup" value="1" />
             <Tab sx={{ width: '100%' , borderBottom:value == "2"?'3px solid #000':'0' }} label="Login" value="2" />
           </Tabs> */}
-          <TabList sx={
+          {/* <TabList sx={
             {
               '& .css-heg063-MuiTabs-flexContainer': {
                 justifyContent: 'center'
@@ -78,6 +70,26 @@ const LandingPage = () => {
             }} onChange={handleChange} aria-label="lab API tabs example">
             <Tab sx={{ width: '100%' }} label="Signup" value="1" />
             <Tab sx={{ width: '100%' }} label="Login" value="2" />
+          </TabList> */}
+          {/* <Tabs sx={
+            {
+              '& .css-heg063-MuiTabs-flexContainer': {
+                justifyContent: 'center'
+              }
+            }} onChange={handleChange} aria-label="lab API tabs example">
+            {tabRoutes.map((tab, index) => (
+              <Tab key={index} label={tab.label} value={tab.value}/>
+            ))}
+          </Tabs> */}
+          <TabList sx={
+            {
+              '& .css-heg063-MuiTabs-flexContainer': {
+                justifyContent: 'center'
+              }
+            }} onChange={handleChange} aria-label="lab API tabs example">
+            {tabRoutes.map((tab, index) => (
+              <Tab key={index} label={tab?.label} value={tab?.value} />
+            ))}
           </TabList>
         </Box>
         <TabPanel value="1"><SignUp /></TabPanel>

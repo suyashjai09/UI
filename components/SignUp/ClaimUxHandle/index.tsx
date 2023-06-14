@@ -38,7 +38,7 @@ const ClaimUxHandle = () => {
         <>
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', flexDirection: 'column' }}>
                 <Typography variant='h1'>Claim your UX Handle</Typography>
-                <Typography variant='h3'>A UX Handle is the Username you'll use when chatting in the UX Community.</Typography>
+                <Typography variant='h3'>A UX Handle is the Username you`&apos`ll use when chatting in the UX Community.</Typography>
                 <form onSubmit={formik.handleSubmit} style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -55,7 +55,7 @@ const ClaimUxHandle = () => {
                         error={formik.touched.uxHandle && Boolean(formik.errors.uxHandle)}
                         helperText={formik.touched.uxHandle && formik.errors.uxHandle}
                     />
-                    <Typography variant='h3'>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it's gone.</Typography>
+                    <Typography variant='h3'>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it`&apos`s gone.</Typography>
                     {/* <TextField id="outlined-basic" label="Email" variant="outlined" name="Email" onChange={(e)=>handleUserInfoChange('Email',e.target.value)}/> */}
                     {uxHandleExist && <Typography variant='h3'>This handle has been taken - please try another one</Typography>}
                     <Button type="submit" sx={{
