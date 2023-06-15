@@ -23,6 +23,7 @@ const LandingPage = () => {
 
   const activeTabIndex = useMemo(() => {
     return tabRoutes[tabRoutes.findIndex((route) => route?.route === router?.pathname)].value;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
