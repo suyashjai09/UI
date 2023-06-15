@@ -8,7 +8,7 @@ import React, {
     useMemo,
     useCallback,
     useReducer,
-    
+
 } from "react";
 import { Snackbar } from "@mui/material";
 import validateEmail from "@/utils/validateEmail";
@@ -20,6 +20,7 @@ import UxThankYou from "@/components/SignUp/UxThankYou";
 import PartnerThankYou from "@/components/SignUp/ParterThankYou";
 import LandingPage from "@/components/LandingPage";
 import { useAuth } from "../AuthContext";
+import { useRouter } from "next/router";
 
 
 interface AuthState {
@@ -41,6 +42,7 @@ interface AuthState {
     registerUser: (password: string, confirmPassword: string) => Promise<any>,
     passwordValidationMessage: string,
     locationId: string,
+    customToken: string,
 }
 
 interface AuthActions {
@@ -67,6 +69,7 @@ const initialState: AuthState = {
     registerUser: () => Promise.resolve(null),
     passwordValidationMessage: '',
     locationId: '',
+    customToken: '',
 }
 
 const initialActions: AuthActions = {
@@ -93,7 +96,8 @@ const reducer = (state: AuthState, action: AuthReducerAction) => {
 
 const SignUpManagementProvider = ({ children }: any) => {
 
-    const { getFireBaseToken } = useAuth();
+    const router = useRouter();
+    // const { getFireBaseToken } = useAuth();
     const [state, setState] = useReducer(reducer, initialState);
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -145,7 +149,6 @@ const SignUpManagementProvider = ({ children }: any) => {
             name: name,
             activePage: 3,
         }));
-
     }, [])
 
     const submitUxHandleInfo = useCallback(async (uxHandle: string) => {
@@ -185,6 +188,32 @@ const SignUpManagementProvider = ({ children }: any) => {
         }
     }, []);
 
+    // const signInWithCustomToken = useCallback(async (token: string) => {
+    //     const response = await getFireBaseToken(token);
+    //     if (response) {
+    //         setState(prevState => ({
+    //             ...prevState,
+    //             activePage: 7,
+    //             customToken: token
+    //         }));
+    //     }
+    //     else {
+    //         setSnackbar({
+    //             open: true,
+    //             message: 'error occoured'
+    //         })
+    //     }
+    // }, [getFireBaseToken])
+
+    const setCustomToken = useCallback(async (token: string) => {
+        setState(prevState => ({
+            ...prevState,
+            activePage: 7,
+            customToken: token
+        }));
+    }, [])
+
+
     const registerUser = useCallback(async (password: string, confirmPassword: string) => {
         try {
             const data = state?.isUserTypeExist ? {
@@ -215,7 +244,7 @@ const SignUpManagementProvider = ({ children }: any) => {
             });
             if (response.ok) {
                 const res = await response.json();
-                await signInWithCustomToken(res?.data?.customToken)
+                setCustomToken(res?.data?.customToken)
             }
             else {
                 setSnackbar({
@@ -230,25 +259,8 @@ const SignUpManagementProvider = ({ children }: any) => {
                 message: 'error occoured'
             })
         }
-    }, [state])
+    }, [state, setCustomToken])
 
-    const signInWithCustomToken = useCallback(async (token: string) => {
-        const response = await getFireBaseToken(token);
-        if (response) {
-            setState(prevState => ({
-                ...prevState,
-                activePage: 7,
-            }));
-        }
-        else {
-            setSnackbar({
-                open: true,
-                message: 'error occoured'
-            })
-        }
-    }, [])
-
-   
 
     const value = useMemo(
         () => ({
@@ -268,7 +280,7 @@ const SignUpManagementProvider = ({ children }: any) => {
             registerUser,
         ]
     );
-  
+
     return (
         <>
             <SignUpManagementContext.Provider value={value}>

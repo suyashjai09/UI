@@ -9,6 +9,9 @@ import React, {
     useEffect,
 } from "react";
 import { Router, useRouter } from "next/router";
+import { CircularProgress } from "@mui/material";
+import { useSignUpManagement } from "../SignUpMangement";
+import { useSearchParams } from 'next/navigation'
 
 
 interface AuthState {
@@ -23,7 +26,7 @@ interface AuthState {
 
 const initialState: AuthState = {
     signIn: (email: string, password: string) => Promise.resolve(null),
-    signOut: () => {},
+    signOut: () => { },
     authFetch: (...arg: any) => Promise.resolve(null),
     authToken: 'loading',
     getFireBaseToken: (token: string) => Promise.resolve(null),
@@ -47,54 +50,67 @@ const AuthContextProvider = ({ children }: any) => {
 
     const router = useRouter();
 
-    const [state, setState] = useReducer(reducer, initialState);
+    const [authState, setAuthState] = useReducer(reducer, initialState);
 
-    const [loading,setLoading] = useState<Boolean>(false);
+    const [loading, setLoading] = useState<Boolean>(false);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
         try {
             if (token) {
-                setState({
-                    ...state,
+                // setAuthState(prev => ({
+                //     ...prev,
+                //     authToken: token
+                // }))
+                setAuthState({
+                    ...authState,
                     authToken: token
                 })
             }
             else {
-                setState({
-                    ...state,
+                // setAuthState(prev => ({
+                //     ...prev,
+                //     authToken: null
+                // }))
+                setAuthState({
+                    ...authState,
                     authToken: null
                 })
             }
         }
         catch (e) {
-            setState({
-                ...state,
+            setAuthState({
+                ...authState,
                 authToken: null
             })
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const [routingDecided, setRouting] = useState(false)
+
     useEffect(() => {
-        switch (state.authToken) {
-            case "loading":
-                return;
+        if (authState.authToken === 'loading') {
+            return
+        }
+        switch (authState.authToken) {
             case null:
                 if (!(router.pathname === "/signin" || router.pathname === "/signup")) {
-                    router.replace("/signup");
+                    router.push("/signup");
                 }
                 break;
-            default:
+            default:       
                 if (
                     router.pathname === "/signin" ||
                     router.pathname === "/signup" || router.pathname === "/"
                 ) {
-                    router.replace("/dashboard");
+                    router.push("/dashboard");
                 }
                 break;
         }
-    }, [router.pathname, state.authToken]);
+        setRouting(true)
+    }, [router, authState.authToken]);
 
     const getFireBaseToken = useCallback(async (token: string) => {
         try {
@@ -110,9 +126,9 @@ const AuthContextProvider = ({ children }: any) => {
             });
             if (response.ok) {
                 const res = await response.json();
-                localStorage.setItem('authToken', res?.idToken);
-                setState({
-                    ...state,
+                localStorage.setItem("authToken", res?.idToken);
+                setAuthState({
+                    ...authState,
                     authToken: res?.idToken
                 })
                 return true;
@@ -124,7 +140,7 @@ const AuthContextProvider = ({ children }: any) => {
         catch (e) {
             return false;
         }
-    }, [])
+    }, [authState])
 
     const signIn = useCallback(async (email: string, password: string) => {
         try {
@@ -141,43 +157,42 @@ const AuthContextProvider = ({ children }: any) => {
             });
             if (response.ok) {
                 const res = await response.json();
-                if (await getFireBaseToken(res?.data?.customToken))
-                    router.push('/dashboard');
+                await getFireBaseToken(res?.data?.customToken)
             }
             else {
-               return false;
+                return false;
             }
         }
         catch (e) {
             return false;
-            console.log(e, "error while loggin")
         }
         finally {
             setLoading(false);
         }
-    }, [])
+    }, [getFireBaseToken])
 
     const signOut = useCallback(() => {
         setLoading(true);
-        localStorage.removeItem('authToken');
-        setState({
-            ...state,
-            authToken: null,
+        localStorage.removeItem("authToken");
+        setAuthState({
+            ...authState,
+            authToken: null
         })
         setLoading(false);
-        router.replace('/signin');
-    }, [])
+    }, [authState])
+
+    
 
     const value = useMemo(
         () => ({
-            ...state,
+            ...authState,
             signIn,
             signOut,
             getFireBaseToken,
             loading,
         }),
         [
-            state,
+            authState,
             signIn,
             signOut,
             getFireBaseToken,
@@ -188,7 +203,9 @@ const AuthContextProvider = ({ children }: any) => {
     return (
         <>
             <AuthContext.Provider value={value}>
-                {children}
+                <ProtectedRoutesRenderer token={authState.authToken}>
+                    {(authState.authToken === 'loading' || !routingDecided) ? <CircularProgress /> : children}
+                </ProtectedRoutesRenderer>
             </AuthContext.Provider>
         </>
     )
@@ -197,3 +214,19 @@ const AuthContextProvider = ({ children }: any) => {
 export { AuthContext, AuthContextProvider };
 
 export const useAuth = () => useContext(AuthContext);
+
+
+const protectedRoutes = [
+    '/dashboard'
+]
+function ProtectedRoutesRenderer({ children, token }: any) {
+    const router = useRouter()
+    if (protectedRoutes.includes(router.pathname) && token === null) {
+        return <CircularProgress />
+    }
+    return (
+        <>
+            {children}
+        </>
+    )
+}

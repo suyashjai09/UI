@@ -55,7 +55,7 @@ const ClaimUxHandle = () => {
                         error={formik.touched.uxHandle && Boolean(formik.errors.uxHandle)}
                         helperText={formik.touched.uxHandle && formik.errors.uxHandle}
                     />
-                    <Typography variant='h3'>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it`&apos`s gone.</Typography>
+                    <Typography variant='h3'>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it&apos;s gone.</Typography>
                     {/* <TextField id="outlined-basic" label="Email" variant="outlined" name="Email" onChange={(e)=>handleUserInfoChange('Email',e.target.value)}/> */}
                     {uxHandleExist && <Typography variant='h3'>This handle has been taken - please try another one</Typography>}
                     <Button type="submit" sx={{

@@ -28,9 +28,9 @@ const LandingPage = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     if (newValue === "1") {
-      router.replace('/signup')
+      router.push('/signup')
     } else {
-      router.replace('/signin')
+      router.push('/signin')
     }
   };
 
