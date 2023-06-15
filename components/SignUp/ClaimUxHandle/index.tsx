@@ -58,18 +58,18 @@ const ClaimUxHandle = () => {
                     <Typography variant='h3'>Tip: If your name is John Doe, try a UX Handle like @John, @JohnD or @JohnDoe.  First names are going fast, so grab yours before it&apos;s gone.</Typography>
                     {/* <TextField id="outlined-basic" label="Email" variant="outlined" name="Email" onChange={(e)=>handleUserInfoChange('Email',e.target.value)}/> */}
                     {uxHandleExist && <Typography variant='h3'>This handle has been taken - please try another one</Typography>}
-                    <Button type="submit" sx={{
+                    <Button type="submit"   variant="contained" color="primary" sx={{
                         width: '156px',
                         height: '60px',
-                        backgroundColor: colors.primaryButton,
+                        // backgroundColor: colors.primaryButton,
                         border: 'none',
                         textTransform: 'none',
-                        color: colors.primaryButtonText,
+                        // color: colors.primaryButtonText,
                         fontSize: '24px',
                         fontWeight: '700',
-                        '&:hover': {
-                            backgroundColor: colors.primaryButton,
-                        },
+                        // '&:hover': {
+                        //     backgroundColor: colors.primaryButton,
+                        // },
                     }}>{loading?<CircularProgress/>:"Continue"}</Button>
                 </form>
             </Box>

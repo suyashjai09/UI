@@ -12,7 +12,7 @@ export const colors = {
     primarySuccess: '#42AE40',
     primaryInactive: '#828282',
     primaryButton:'#808080',
-    primaryButtonText:'#000',
+    primaryButtonText:'#fff',
     secondaryError: '#F3C6C6',
     secondarySuccess: '#C6F3D2',
     secondaryInactive: '#E3E3E3',
@@ -24,8 +24,8 @@ export const createPalette = (mode: PaletteMode): PaletteOptions => ({
       default: colors.primaryBackground,
     },
     primary: {
-      main: colors.primaryBlue,
-      contrastText: colors.primaryWhite,
+      main: colors.primaryButton,
+      contrastText: colors.primaryButtonText,
     },
     common: {
       white: colors.primaryWhite,

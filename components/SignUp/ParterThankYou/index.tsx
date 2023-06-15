@@ -21,18 +21,18 @@ const PartnerThankYou = () => {
                 <Typography variant='h3'>Awesome. Our UX.com.au team have your details.
                     We will be in touch shorty. Thanks.</Typography>
                 <Typography>Where to next</Typography>
-                <Button sx={{
+                <Button  variant="contained" color="primary" sx={{
                     width: '210px',
                     height: '60px',
-                    backgroundColor: colors.primaryButton,
+                    // backgroundColor: colors.primaryButton,
                     border: 'none',
                     textTransform: 'none',
-                    color: colors.primaryButtonText,
+                    // color: colors.primaryButtonText,
                     fontSize: '24px',
                     fontWeight: '700',
-                    '&:hover': {
-                        backgroundColor: colors.primaryButton,
-                    },
+                    // '&:hover': {
+                    //     backgroundColor: colors.primaryButton,
+                    // },
                 }}
                 onClick={signInWithCustomToken}
                 >UI/UX Home</Button>

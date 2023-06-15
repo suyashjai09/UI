@@ -148,18 +148,20 @@ const UserCategories = () => {
                     })}
                     </Grid>
                 </RadioGroup>
-            <Button sx={{
+            <Button 
+             variant="contained" color="primary"
+            sx={{
                 width: '156px',
                 height: '60px',
-                backgroundColor: colors.primaryButton,
+                // backgroundColor: colors.primaryButton,
                 border: 'none',
                 textTransform: 'none',
-                color: colors.primaryButtonText,
+                // color: colors.primaryButtonText,
                 fontSize: '24px',
                 fontWeight: '700',
-                '&:hover': {
-                    backgroundColor: colors.primaryButton,
-                },
+                // '&:hover': {
+                //     backgroundColor: colors.primaryButton,
+                // },
             }} onClick={handleUserCategoryChange}>Next</Button>
             {errorMessage && <Typography sx={{ color: 'red', width: '100%', alignItems: 'center' }}>{errorMessage}</Typography>}
         </Stack>
