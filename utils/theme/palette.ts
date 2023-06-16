@@ -12,7 +12,7 @@ export const colors = {
     primarySuccess: '#42AE40',
     primaryInactive: '#828282',
     primaryButton:'#808080',
-    primaryButtonText:'#fff',
+    primaryButtonText:'#000',
     secondaryError: '#F3C6C6',
     secondarySuccess: '#C6F3D2',
     secondaryInactive: '#E3E3E3',

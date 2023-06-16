@@ -22,16 +22,14 @@ const UxThankYou = () => {
                 <Button sx={{
                     width: '200px',
                     height: '60px',
-                    // backgroundColor: colors.primaryButton,
+                   
                     border: 'none',
                     textTransform: 'none',
-                    // color: colors.primaryButtonText,
+                    
                     marginTop: '7px',
                     fontSize: '24px',
                     fontWeight: '700',
-                    // '&:hover': {
-                    //     backgroundColor: colors.primaryButton,
-                    // },
+                    
                 }} onClick={signInWithCustomToken}>Create Profile</Button>
             </Box>
         </>

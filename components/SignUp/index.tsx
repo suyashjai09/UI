@@ -54,17 +54,12 @@ const SignUp = () => {
           variant="contained" color="primary"
           sx={{
             width: '156px',
-            height: '60px',
-            // backgroundColor: colors.primaryButton,
+            height: '60px',         
             border: 'none',
-            textTransform: 'none',
-            // color: colors.primaryButtonText,
+            textTransform: 'none',           
             marginTop: '7px',
             fontSize: '24px',
             fontWeight: '700',
-            // '&:hover': {
-            //   backgroundColor: colors.primaryButton,
-            // },
           }} >{loading ? <CircularProgress /> : "Continue"}</Button>
       </form>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>

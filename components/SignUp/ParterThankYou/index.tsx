@@ -23,16 +23,11 @@ const PartnerThankYou = () => {
                 <Typography>Where to next</Typography>
                 <Button  variant="contained" color="primary" sx={{
                     width: '210px',
-                    height: '60px',
-                    // backgroundColor: colors.primaryButton,
+                    height: '60px',                  
                     border: 'none',
-                    textTransform: 'none',
-                    // color: colors.primaryButtonText,
+                    textTransform: 'none',                   
                     fontSize: '24px',
-                    fontWeight: '700',
-                    // '&:hover': {
-                    //     backgroundColor: colors.primaryButton,
-                    // },
+                    fontWeight: '700',                 
                 }}
                 onClick={signInWithCustomToken}
                 >UI/UX Home</Button>
