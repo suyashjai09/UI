@@ -8,9 +8,6 @@ const Dashboard=()=>{
             <Stack>
               <DashboardHeader/>
             </Stack>
-            {/* <Stack>
-
-            </Stack> */}
         </Box>
         </>
     )
